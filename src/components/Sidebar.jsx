@@ -28,7 +28,7 @@ const Sidebar = () => {
           <h2>FAM HQ</h2>
           <h3>
             <FiberManualRecordIcon />
-            Mark Lin
+            {user?.displayName}
           </h3>
         </SidebarInfo>
         <AddIcon />
