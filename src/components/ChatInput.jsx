@@ -1,13 +1,15 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import SendIcon from "@material-ui/icons/Send";
-import { db } from "../firebase";
+import { auth, db } from "../firebase";
 import firebase from "firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const ChatInput = ({ channelName, channelId, chatRef }) => {
   //   console.log(channelId);
   //   const inputRef = useRef(null);
   const [input, setInput] = useState("");
+  const [user] = useAuthState(auth);
   const sendMessage = (e) => {
     e.preventDefault();
 
@@ -20,9 +22,15 @@ const ChatInput = ({ channelName, channelId, chatRef }) => {
       message: input,
       //   timestamp
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      user: "Mark Lin",
-      userImage: "https://i.imgur.com/ZeUbSnt.png",
+      user: user.displayName,
+      userImage: user.photoURL,
     });
+
+    // scroll down after submit input
+    chatRef.current.scrollIntoView({
+      behavior: "smooth",
+    });
+
     // inputRef(null);  ??????
     setInput("");
   };
