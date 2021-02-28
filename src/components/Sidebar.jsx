@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import SidebarOption from "./SidebarOption";
@@ -17,15 +17,19 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { Button } from "@material-ui/core";
 
 const Sidebar = () => {
   const [channels] = useCollection(db.collection("rooms"));
   const [user] = useAuthState(auth);
+  const [showBottom, setShowBottom] = useState(true);
+  const [showTop, setShowTop] = useState(true);
+
   return (
     <SidebarContainer>
       <SidebarHeader>
         <SidebarInfo>
-          <h2>FAM HQ</h2>
+          <h2>User :</h2>
           <h3>
             <FiberManualRecordIcon />
             {user?.displayName}
@@ -33,22 +37,43 @@ const Sidebar = () => {
         </SidebarInfo>
         <AddIcon />
       </SidebarHeader>
-      <SidebarOption Icon={InsertCommentIcon} title="Thread" />
-      <SidebarOption Icon={InboxIcon} title="Mentions & reactions" />
-      <SidebarOption Icon={DraftsIcon} title="Saved items" />
-      <SidebarOption Icon={BookmarkBorderIcon} title="Channel browser" />
-      <SidebarOption Icon={PeopleAltIcon} title="People & user groups" />
-      <SidebarOption Icon={AppsIcon} title="Apps" />
-      <SidebarOption Icon={FileCopyIcon} title="File browser" />
-      <SidebarOption Icon={ExpandLessIcon} title="Show less" />
-      <hr />
-      <SidebarOption Icon={ExpandMoreIcon} title="Show more" />
-      <hr />
-      <SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
+      {showTop ? (
+        <>
+          <SidebarOption Icon={InsertCommentIcon} title="Thread" />
+          <SidebarOption Icon={InboxIcon} title="Mentions & reactions" />
+          <SidebarOption Icon={DraftsIcon} title="Saved items" />
+          <SidebarOption Icon={BookmarkBorderIcon} title="Channel browser" />
+          <SidebarOption Icon={PeopleAltIcon} title="People & user groups" />
+          <SidebarOption Icon={AppsIcon} title="Apps" />
+          <SidebarOption Icon={FileCopyIcon} title="File browser" />
+        </>
+      ) : null}
 
+      <Button onClick={() => setShowTop(!showTop)}>
+        {showTop ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        {showTop ? "Show less" : "Show more"}
+      </Button>
+      <hr />
+      {/* <SidebarOption Icon={ExpandMoreIcon} title="Show more" /> */}
+      <Button onClick={() => setShowBottom(!showBottom)}>
+        {showBottom ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+        {showBottom ? "Show less" : "Show more"}
+      </Button>
+      {/* <button onClick={() => setShow(!show)}>
+        {show ? "Show less" : "Show more"}
+      </button> */}
+      {showBottom ? (
+        <>
+          <SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
+          {channels?.docs.map((doc) => (
+            <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
+          ))}
+        </>
+      ) : null}
+      {/* <SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
       {channels?.docs.map((doc) => (
         <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
-      ))}
+      ))} */}
     </SidebarContainer>
   );
 };
@@ -78,6 +103,12 @@ const SidebarContainer = styled.div`
     margin-top: 10px;
     margin-bottom: 10px;
     border: 1px solid #49274b;
+  }
+
+  > button {
+    color: white;
+    margin-left: 2px;
+    font-size: 13px;
   }
 `;
 
