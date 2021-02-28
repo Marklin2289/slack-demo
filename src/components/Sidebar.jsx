@@ -45,6 +45,7 @@ const Sidebar = () => {
       <SidebarOption Icon={ExpandMoreIcon} title="Show more" />
       <hr />
       <SidebarOption Icon={AddIcon} addChannelOption title="Add Channel" />
+
       {channels?.docs.map((doc) => (
         <SidebarOption key={doc.id} id={doc.id} title={doc.data().name} />
       ))}
@@ -61,6 +62,17 @@ const SidebarContainer = styled.div`
   border-top: 1px solid #49274b;
   max-width: 260px;
   margin-top: 60px;
+  overflow-y: scroll;
+
+  ::-webkit-scrollbar {
+    width: 1em;
+    background-color: var(--slack-color);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #49274b;
+    outline: 1em solid #49274b;
+  }
 
   > hr {
     margin-top: 10px;

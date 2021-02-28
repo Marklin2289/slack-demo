@@ -14,7 +14,7 @@ const Header = () => {
       {/* Header left */}
       <HeaderLeft>
         <HeaderAvatar src={user?.photoURL} alt={user?.displayName} />
-        <Button onClick={() => auth.signOut()}>Sign Out</Button>
+
         <AccessTimeIcon />
       </HeaderLeft>
 
@@ -26,6 +26,7 @@ const Header = () => {
 
       {/* Header Right */}
       <HeaderRight>
+        <Button onClick={() => auth.signOut()}>Sign Out</Button>
         <HelpOutlineIcon />
       </HeaderRight>
     </HeaderContainer>
@@ -42,6 +43,13 @@ const HeaderRight = styled.div`
   > .MuiSvgIcon-root {
     margin-left: auto;
     margin-right: 20px;
+  }
+
+  > button {
+    color: white;
+    font-size: 10px;
+    margin-left: 200px;
+    border-radius: 10px;
   }
 `;
 
@@ -86,18 +94,6 @@ const HeaderLeft = styled.div`
   > .MuiSvgIcon-root {
     margin-left: auto;
     margin-right: 30px;
-  }
-
-  > button {
-    color: black;
-    font-size: 10px;
-    background-color: lightgray;
-    margin-left: 10px;
-    border-radius: 10px;
-  }
-
-  > button > :hover {
-    color: lightgray;
   }
 `;
 
